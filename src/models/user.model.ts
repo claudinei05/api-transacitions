@@ -2,20 +2,24 @@ import { v4 as createUuid } from "uuid";
 import { Transaction } from "./transactions.model";
 export class UserModel {
   private _id: string;
+  private _transactions: Transaction[];
   constructor(
     private _name: string,
     private _cpf: string,
     private _email: string,
-    private _age: number,
-    private _transactions?: Transaction[]
+    private _age: number
   ) {
     this._id = createUuid();
+    this._transactions = [];
   }
   public get id() {
     return this._id;
   }
   public set age(age: number) {
     this._age = age;
+  }
+  public get age() {
+    return this._age;
   }
   public get cpf() {
     return this._cpf;
