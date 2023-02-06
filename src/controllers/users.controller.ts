@@ -77,8 +77,7 @@ usuário nessa rota. */
       if (cpf) {
         users = users.filter((user) => user.cpf === String(cpf));
       }
-      console.log(cpf);
-      console.log(users);
+
       const returnUser = users.map((users) => {
         return {
           id: users.id,
@@ -88,14 +87,72 @@ usuário nessa rota. */
           age: users.age,
         };
       });
-
+      if (returnUser.length === 0) {
+        return res.status(404).send({
+          ok: false,
+          message: "Usuario não encontrado",
+        });
+      }
       res.status(200).send({
         ok: true,
         message: "Users successfully listed (Usuários listados com sucesso)",
         data: returnUser,
       });
     } catch (error: any) {
-      return RequestError.notFound(res, "Information ");
+      return RequestError.notFound(res, error);
+    }
+  }
+  // PUT /users/:id: A rota deverá editar ou deletar usuários.
+  public update(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { name, cpf, email, age } = req.body;
+      const database = new UserDataBase();
+      let users = database.getId(id);
+      if (!users) {
+        return RequestError.notFound(res, "User ");
+      }
+      if (name) {
+        users.name = name;
+      }
+      if (cpf) {
+        users.cpf = cpf;
+      }
+      if (email) {
+        users.email = email;
+      }
+      if (age) {
+        users.age = age;
+      }
+
+      return res.status(200).send({
+        ok: true,
+        message: "User successfully updated (Usuario atualizado com sucesso)",
+      });
+    } catch (error: any) {
+      return ErrorServer.errorServerProcessing(res, error);
+    }
+  }
+  public deleteUsers(req: Request, res: Response) {
+    try {
+      console.log("teste");
+
+      const { id } = req.params;
+      const database = new UserDataBase();
+      const users = database.indexUser(id);
+      console.log(users);
+
+      if (users < 0) {
+        return RequestError.notFound(res, "User ");
+      }
+      database.deleteUser(users);
+      return SuccessResponse.ok(
+        res,
+        "User was successfully deleted(Usuario foi excluído com sucesso)",
+        users
+      );
+    } catch (error: any) {
+      return ErrorServer.errorServerProcessing(res, error);
     }
   }
 }

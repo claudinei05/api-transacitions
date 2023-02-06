@@ -12,7 +12,8 @@ export const userRoutes = () => {
   );
   app.get("/users/:id", new usersController().getUser);
   app.get("/users", new usersController().listUsers);
-  // app.put("/users/:id",new usersController())
-  // app.delete("users/:id",new usersController())
+  app.delete("users/:id", new usersController().deleteUsers);
+  app.put("/users/:id", new usersController().update);
+  // app.delete("users/:id", new usersController().delete);
   return app;
 };

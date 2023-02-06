@@ -15,16 +15,23 @@ export class UserDataBase {
   public getCpf(cpf: string) {
     return users.find((user) => user.cpf === cpf);
   }
-  // public getListUser(listUsers: string, filterUser: string) {
-  //   const filter1 = () => {
-  //     users.findIndex((listarUsuario) => listarUsuario.id === listUsers);
-  //     users.filter((users1) => users1.name === filterUser);
-  //     users.filter((users1) => users1.cpf === filterUser);
-  //     users.filter((users1) => users1.email === filterUser);
-  //   };
-  //   return filter1();
-  // }
-  // public getCpf(cpf:number){
-
-  // }
+  public indexUser(id: string) {
+    return users.findIndex((user) => user.id === id);
+  }
+  public deleteUser(index: number) {
+    return users.splice(index, 1);
+  }
 }
+
+// public getListUser(listUsers: string, filterUser: string) {
+//   const filter1 = () => {
+//     users.findIndex((listarUsuario) => listarUsuario.id === listUsers);
+//     users.filter((users1) => users1.name === filterUser);
+//     users.filter((users1) => users1.cpf === filterUser);
+//     users.filter((users1) => users1.email === filterUser);
+//   };
+//   return filter1();
+// }
+// public getCpf(cpf:number){
+
+// }

@@ -15,23 +15,38 @@ export class UserModel {
   public get id() {
     return this._id;
   }
-  public set age(age: number) {
-    this._age = age;
-  }
+  // public set id() {
+  //   this._id = this.id;
+  // }
   public get age() {
     return this._age;
+  }
+  public set age(age: number) {
+    this._age = age;
   }
   public get cpf() {
     return this._cpf;
   }
+  public set cpf(cpf: string) {
+    this._cpf = cpf;
+  }
   public get name() {
     return this._name;
+  }
+  public set name(name: string) {
+    this._name = name;
   }
   public get email() {
     return this._email;
   }
+  public set email(email: string) {
+    this._email = email;
+  }
   public get transactions() {
     return this._transactions;
+  }
+  public set transactions(transactions: Transaction[]) {
+    this._transactions = transactions;
   }
   public toJson() {
     return {
@@ -41,7 +56,6 @@ export class UserModel {
       age: this._age,
       email: this._email,
       transactions: this.transactions,
-      //cpf: cpfValidator.format(this._cpf.toString().padStart(11, "0")),
     };
   }
 }
