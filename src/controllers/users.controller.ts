@@ -45,13 +45,14 @@ usuário nessa rota. */
       res.status(200).send({
         ok: true,
         message: "User successfully obtained(Usuário obtido com sucesso)",
-        data: {
-          id: user.id,
-          name: user.name,
-          cpf: user.cpf,
-          email: user.email,
-          age: user.age,
-        },
+        data: user,
+        // data: {
+        //   id: user.id,
+        //   name: user.name,
+        //   cpf: user.cpf,
+        //   email: user.email,
+        //   age: user.age,
+        // },
       });
     } catch (error: any) {
       return ErrorServer.errorServerProcessing(res, error);
@@ -140,17 +141,28 @@ usuário nessa rota. */
       const { id } = req.params;
       const database = new UserDataBase();
       const users = database.indexUser(id);
-      console.log(users);
+      const user = database.getId(id);
+
+      if (!user) {
+        return RequestError.notFound(res, "User ");
+      }
 
       if (users < 0) {
         return RequestError.notFound(res, "User ");
       }
       database.deleteUser(users);
-      return SuccessResponse.ok(
-        res,
-        "User was successfully deleted(Usuario foi excluído com sucesso)",
-        users
-      );
+      res.status(200).send({
+        ok: true,
+        message:
+          "User was successfully deleted(Usuario foi excluído com sucesso)",
+        data: {
+          id: user.id,
+          name: user.name,
+          cpf: user.cpf,
+          email: user.email,
+          age: user.age,
+        },
+      });
     } catch (error: any) {
       return ErrorServer.errorServerProcessing(res, error);
     }

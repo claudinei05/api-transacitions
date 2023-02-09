@@ -9,6 +9,9 @@ export class Transaction {
   ) {
     this._id = createUuid();
   }
+  public get id() {
+    return this._id;
+  }
   public get title() {
     return this._title;
   }

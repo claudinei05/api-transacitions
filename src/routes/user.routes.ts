@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { TransactionController } from "../controllers/transctions.controller";
 import { usersController } from "../controllers/users.controller";
 import { ValidatorMiddlewareCpf } from "../middlewares/validator_cpf.middleware";
 
@@ -12,8 +13,14 @@ export const userRoutes = () => {
   );
   app.get("/users/:id", new usersController().getUser);
   app.get("/users", new usersController().listUsers);
-  app.delete("users/:id", new usersController().deleteUsers);
+  app.delete("/users/:id", new usersController().deleteUsers);
   app.put("/users/:id", new usersController().update);
-  // app.delete("users/:id", new usersController().delete);
+  app.post("/user/:userId", new TransactionController().previousUser);
+  app.get(
+    "/user/:userId/transactions/:id",
+    new TransactionController().userIdTransactions
+  );
+  //app.get("users/:userId/trasactions")
+
   return app;
 };

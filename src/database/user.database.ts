@@ -1,5 +1,6 @@
 import { cpf } from "cpf-cnpj-validator";
 import { UserModel } from "../models/user.model";
+
 import { users } from "./user";
 
 export class UserDataBase {
@@ -9,6 +10,7 @@ export class UserDataBase {
   public getId(id: string) {
     return users.find((user) => user.id === id);
   }
+
   public create(usuario: UserModel) {
     return users.push(usuario);
   }
@@ -22,16 +24,3 @@ export class UserDataBase {
     return users.splice(index, 1);
   }
 }
-
-// public getListUser(listUsers: string, filterUser: string) {
-//   const filter1 = () => {
-//     users.findIndex((listarUsuario) => listarUsuario.id === listUsers);
-//     users.filter((users1) => users1.name === filterUser);
-//     users.filter((users1) => users1.cpf === filterUser);
-//     users.filter((users1) => users1.email === filterUser);
-//   };
-//   return filter1();
-// }
-// public getCpf(cpf:number){
-
-// }
