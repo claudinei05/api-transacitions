@@ -4,7 +4,7 @@ export class Transaction {
   private _id: string;
   constructor(
     private _title: string,
-    private _value: string,
+    private _value: number,
     private _type: string = "income" || "outecome"
   ) {
     this._id = createUuid();
@@ -27,7 +27,7 @@ export class Transaction {
   public get value() {
     return this._value;
   }
-  public set value(value: string) {
+  public set value(value: number) {
     this._value = value;
   }
   public toJson() {

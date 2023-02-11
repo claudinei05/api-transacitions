@@ -20,7 +20,15 @@ export const userRoutes = () => {
     "/user/:userId/transactions/:id",
     new TransactionController().userIdTransactions
   );
-  //app.get("users/:userId/trasactions")
+  app.get(
+    "/users/:userId/trasactions",
+    new TransactionController().listTransactions
+  );
+  app.put(
+    "/users/:userId/transactions/:id",
+    new TransactionController().update
+  );
+  //app.delete("/users/:userId/transactions/:id"new TransactionController());
 
   return app;
 };

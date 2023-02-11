@@ -23,4 +23,7 @@ export class UserDataBase {
   public deleteUser(index: number) {
     return users.splice(index, 1);
   }
+  public delTransactions(index: number) {
+    return users.splice(index, 1);
+  }
 }
