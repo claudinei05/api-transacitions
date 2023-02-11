@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { UserDataBase } from "../database/user.database";
 import { RequestError } from "../erros/request.error";
+import { ErrorServer } from "../erros/server.error";
 import { Transaction } from "../models/transactions.model";
 import { UserModel } from "../models/user.model";
+import { SuccessResponse } from "../success/success";
 /*POST /user/:userId/transactions: A rota deverá receber title, value,
 type dentro do corpo da requisição, sendo type o tipo da transação,
 que deve ter como valor de entradas income (depósitos) e outcome
@@ -37,7 +39,7 @@ export class TransactionController {
       const users = database.getId(userId);
 
       if (!users) {
-        return RequestError.notFound(res, "User");
+        return RequestError.notFound(res, "User1");
       }
       const newTrasactions = new Transaction(title, value, type);
       users.transactions.push(newTrasactions);
@@ -83,11 +85,91 @@ listagem com todas as transações que você cadastrou até o
 momento para um usuário específico, junto com o valor da soma de
 entradas, retiradas e total de crédito. Esta rota deve poder filtrar as
 transações pelo título e tipo de transação. */
-  //   public listTransactions(req: Request, res: Response) {
-  //     try {
-  //       const {userId}=req.params
-  //       const database= new UserDataBase()
-  //       const user=
-  //     } catch (error) {}
-  //   }
+  public listTransactions(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+      const { title, type } = req.query;
+      const database = new UserDataBase();
+      const user = database.getId(userId);
+
+      if (!user) {
+        return RequestError.fieldNotProvaider(res, "User ");
+      }
+      if (title) {
+        user.transactions = user.transactions.filter(
+          (item) => item.title === title
+        );
+      }
+      if (type) {
+        user.transactions = user.transactions.filter(
+          (item) => item.type === type
+        );
+      }
+
+      let income = 0;
+      let outecome = 0;
+      user.transactions.forEach((item) => {
+        if (item.type === "income") {
+          income += item.value;
+        } else {
+          outecome += item.value;
+        }
+      });
+      const soma = income - outecome;
+
+      let transactions = user.transactions.map((item) => {
+        return {
+          id: item.id,
+          title: item.title,
+          value: item.value,
+          type: item.type,
+        };
+      });
+      return res.status(200).send({
+        transactions,
+        balance: {
+          income,
+          outecome,
+          total: soma,
+        },
+      });
+    } catch (error) {}
+  }
+  public update(req: Request, res: Response) {
+    try {
+      const { userId, id } = req.params;
+      const { type, title, value } = req.body;
+      const database = new UserDataBase();
+      const user = database.getId(userId);
+      if (!user) {
+        return RequestError.fieldNotProvaider(res, "User ");
+      }
+      const transactions = user.transactions.find((item) => item.id === id);
+      if (!transactions) {
+        return RequestError.notFound(res, "Transactions ");
+      }
+      if (type) {
+        transactions.type = type;
+      }
+      if (title) {
+        transactions.title = title;
+      }
+      if (value) {
+        transactions.value = value;
+      }
+      return res.status(202).send({
+        ok: true,
+        message: "Atualizado com sucesso",
+      });
+    } catch (error: any) {
+      return ErrorServer.errorServerProcessing;
+    }
+  }
+  public deleteTransactions(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const database = new UserDataBase();
+      const user = database.getId(id);
+    } catch (error) {}
+  }
 }
