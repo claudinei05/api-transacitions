@@ -28,7 +28,10 @@ export const userRoutes = () => {
     "/users/:userId/transactions/:id",
     new TransactionController().update
   );
-  //app.delete("/users/:userId/transactions/:id"new TransactionController());
+  app.delete(
+    "/users/:userId/transactions/:id",
+    new TransactionController().deleteTransactions
+  );
 
   return app;
 };

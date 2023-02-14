@@ -20,6 +20,9 @@ export class UserDataBase {
   public indexUser(id: string) {
     return users.findIndex((user) => user.id === id);
   }
+  public indexTransactions(id: string) {
+    // return users.findIndex((transactions) => transactions.transactions === id);
+  }
   public deleteUser(index: number) {
     return users.splice(index, 1);
   }

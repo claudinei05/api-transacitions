@@ -167,9 +167,27 @@ transações pelo título e tipo de transação. */
   }
   public deleteTransactions(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { userId, id } = req.params;
       const database = new UserDataBase();
-      const user = database.getId(id);
+      const user = database.getId(userId);
+      const transactionsDelete = database.indexUser(userId);
+      if (!user) {
+        return RequestError.fieldNotProvaider(res, "User ");
+      }
+      const transactions = user.transactions.find((item) => item.id === id);
+      if (!transactions) {
+        return RequestError.notFound(res, "Transactions ");
+      }
+      if (transactionsDelete < 0) {
+        return RequestError.notFound(res, "User ");
+      }
+      database.delTransactions(transactionsDelete);
+      return res.status(200).send({
+        ok: true,
+        message:
+          "User was successfully deleted(Usuario foi excluído com sucesso)",
+        data: transactions,
+      });
     } catch (error) {}
   }
 }

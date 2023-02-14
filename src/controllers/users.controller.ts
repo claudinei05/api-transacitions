@@ -136,8 +136,6 @@ usuário nessa rota. */
   }
   public deleteUsers(req: Request, res: Response) {
     try {
-      console.log("teste");
-
       const { id } = req.params;
       const database = new UserDataBase();
       const users = database.indexUser(id);
