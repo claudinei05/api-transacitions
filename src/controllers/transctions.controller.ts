@@ -48,7 +48,9 @@ export class TransactionController {
         message: "Transactions success created",
         date: users,
       });
-    } catch (error) {}
+    } catch (error) {
+      return RequestError.fieldNotProvaider(res, "Transactions ");
+    }
   }
   /*GET /user/:userId/transactions/:id: A rota deverá retornar uma única
 transação cadastrada previamente */
@@ -78,7 +80,9 @@ transação cadastrada previamente */
           type: transactions1.type,
         },
       });
-    } catch (error) {}
+    } catch (error: any) {
+      return RequestError.fieldNotProvaider(res, "Transactions ");
+    }
   }
   /*GET /users/:userId/transactions: A rota deverá retornar uma
 listagem com todas as transações que você cadastrou até o
@@ -133,8 +137,12 @@ transações pelo título e tipo de transação. */
           total: soma,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      return RequestError.notFound(res, "Transactions ");
+    }
   }
+  //   PUT/DELETE /users/:userId/transactions/:id: Devem editar ou deletar
+  // transações.
   public update(req: Request, res: Response) {
     try {
       const { userId, id } = req.params;
@@ -162,7 +170,7 @@ transações pelo título e tipo de transação. */
         message: "Atualizado com sucesso",
       });
     } catch (error: any) {
-      return ErrorServer.errorServerProcessing;
+      return ErrorServer.errorServerProcessing(res, error);
     }
   }
   public deleteTransactions(req: Request, res: Response) {
@@ -188,6 +196,8 @@ transações pelo título e tipo de transação. */
           "User was successfully deleted(Usuario foi excluído com sucesso)",
         data: transactions,
       });
-    } catch (error) {}
+    } catch (error) {
+      return RequestError.notFound(res, "Transactions ");
+    }
   }
 }
